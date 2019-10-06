@@ -5,7 +5,7 @@ from string import Template
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-MY_EMAIL = 'sshreya98bhat@gmail.com'
+MY_EMAIL = 'abc@gmail.com'
 MY_PASSWORD = 'testingpurpose'
 
 def get_users(file_name):
