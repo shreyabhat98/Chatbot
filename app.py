@@ -1,124 +1,114 @@
-<!DOCTYPE html>
-<html>
-  <title>Business Intelligence chatbot</title>
-  
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <style>
-      body {
-        font-family: monospace;
-      }
-     
-      h3 {
-        color: black;
-        font-size: 20px;
-        margin-top: 3px;
-        text-align: center;
-      }
-      #chatbox {
-        margin-left: auto;
-        margin-right: auto;
-        width: 40%;
-        margin-top: 60px;
-      }
-      #userInput {
-        margin-left: auto;
-        margin-right: auto;
-        width: 40%;
-        margin-top: 60px;
-      }
-      #textInput {
-        width: 90%;
-        border: none;
-        border-bottom: 3px solid black;
-        font-family: monospace;
-        font-size: 17px;
-      }
-      .userText {
-        color: white;
-        font-family: monospace;
-        font-size: 17px;
-        text-align: right;
-        line-height: 30px;
-      }
-      .userText span {
-        background-color: #808080;
-        padding: 10px;
-        border-radius: 2px;
-      }
-      .botText {
-        color: white;
-        font-family: monospace;
-        font-size: 17px;
-        text-align: left;
-        line-height: 30px;
-      }
-      .botText span {
-        background-color: #4169e1;
-        padding: 10px;
-        border-radius: 2px;
-      }
-      #tidbit {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        width: 300px;
-      }
-      .boxed {
-        margin-left: auto;
-        margin-right: auto;
-        width: 78%;
-        margin-top: 60px;
-        border: 1px solid green;
-      }
-      .box {
-        border: 2px solid black;
-      }
-    </style>
-  </head>
-  <body>
-    <img />
-    <center>
-      <h1>
-       Your Personal ChatBot
-      </h1>
-    </center>
+from flask import Flask, render_template, request
+ #import pyodbc
+
+
+app = Flask(__name__)
+
+def service_bot():
+    print("Hello! Welcome to the RBS Business Intelligence Service Portal. how may I help you? \n [1] I have trouble logging in \n [2] I have to report another issue")
+    response_one = input("Please enter the number corresponding to your choice: ")
+    if response_one == "1":
+        access_issue()
+    elif response_one == "2":
+        call_ai_fun()
+    else:
+        print("Sorry, we didn't understand your selection.")
+        service_bot()
+'''def access_issue():
+    #retrieve the url from the database (yet to be created)
+    print("Please follow the instructions in the given url.")
+    import pyodbc 
+    conn = pyodbc.connect('Driver={SQL Server};'
+                      'Server=LONMS11504\DMLNFARM01;'
+                      'Database=UBDWH;'
+                      'Trusted_Connection=no;'
+                      'UID=App_Archive_User_Dev;'
+                      'PWD=Welcome2rbs@2017;')
+                      
+
+    cursor = conn.cursor()
+    cursor.execute('select * from ubdwh.dbo.url')
+    rows = cursor.fetchone()
+ 
+    for row in rows:
+        print (str(row)) 
    
+    ans=input("\n Is there anything I could help you with?")
+    if ans=="yes":
+        service_bot()
+    else:
+        print("Thank you for reaching out. Hope I could be of some help") '''
+        
+        
+@app.route("/ai")        
+def call_ai_fun():
+    #ask for the problem
     
-    <div class="boxed">
-      <div>
-        <div id="chatbox">
-          
-          <p class="botText">
-            <span>Hi! How May I help you?</span>
-          </p>
-        </div>
-        <div id="userInput">
-          <input id="textInput" type="text" name="msg" placeholder="Message" />
-        </div>
-      </div>
-      <script>
-        function getBotResponse() {
-          var rawText = $("#textInput").val();
-          var userHtml = '<p class="userText"><span>' + rawText + "</span></p>";
-          $("#textInput").val("");
-          $("#chatbox").append(userHtml);
-          document
-            .getElementById("userInput")
-            .scrollIntoView({ block: "start", behavior: "smooth" });
-          $.get("/get", { msg: rawText }).done(function(data) {
-            var botHtml = '<p class="botText"><span>' + data + "</span></p>";
-            $("#chatbox").append(botHtml);
-            document
-              .getElementById("userInput")
-              .scrollIntoView({ block: "start", behavior: "smooth" });
-          });
-        }
-        $("#textInput").keypress(function(e) {
-          if (e.which == 13) {
-            getBotResponse();
-          }
-        });
-      </script>
-    </div>
-  </body>
-</html>
+  #prob=input("Hi! What is the problem you are facing?")
+     #rackf=input("what is your rackf?")
+    # domain=input("what is your domain?")
+   #  log=input("Have you logged in before?")'''
+    import pyodbc 
+    conn = pyodbc.connect('Driver={SQL Server};'
+                      'Server=LONMS11504\DMLNFARM01;'
+                      'Database=UBDWH;'
+                      'Trusted_Connection=no;'
+                      'UID=App_Archive_User_Dev;'
+                      'PWD=Welcome2rbs@2017;')
+                      
+
+    cursor = conn.cursor()
+    #insertQuery = "insert into UBDWH.dbo.chat (rackf, domain) values(\'"+rackf+"\',\'"+domain+"\')"
+    #print(insertQuery)
+   # cursor.execute(insertQuery)
+   # conn.commit()
+    cursor.close()
+    return "test"
+   
+ # if log=="yes":
+    #     date_time=input("When was the last time you logged in? Please provide us the date and approximate time")
+   #  else:
+   #      impact=input("Does it impact only you?")
+   #      if impact=="yes":
+  #          print("We are sorry to know that.We will definitely help you out")
+      #   else:
+         #    ref_rackf=print("Please give us the rackf of the other person who has the same problem")'''
+@app.route("/")
+def home():
+    return render_template("home.html")
+
+@app.route("/get")
+def access_issue():
+    #retrieve the url from the database (yet to be created)
+  #  return "Please follow the instructions in the given url."
+    import pyodbc 
+    conn = pyodbc.connect('Driver={SQL Server};'
+                      'Server=LONMS11504\DMLNFARM01;'
+                      'Database=UBDWH;'
+                      'Trusted_Connection=no;'
+                      'UID=App_Archive_User_Dev;'
+                      'PWD=Welcome2rbs@2017;')
+                      
+
+    cursor = conn.cursor()
+    cursor.execute('select * from ubdwh.dbo.url')
+    rows = cursor.fetchone()
+ 
+    for row in rows:
+        #userInput=request.args.get('msg')
+        return str(row)
+    
+    #userInput=request.args.get('msg')
+
+   
+   # ans=input("\n Is there anything I could help you with?")
+    #if ans=="yes":
+    #    service_bot()
+    #else:
+     #   print("Thank you for reaching out. Hope I could be of some help")
+#def get_bot_response():
+ #   userText = request.args.get('msg')
+  #  return str(get_response(userText))
+
+if __name__ == "__main__":
+    app.run()
