@@ -1,5 +1,67 @@
 
-<!DOCTYPE html>
+  <!-- <style>body {
+    font: 15px arial, sans-serif;
+    background-color: #d9d9d9;
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+  
+  #bodybox {
+    margin: auto;
+    max-width: 550px;
+    font: 15px arial, sans-serif;
+    background-color: white;
+    border-style: solid;
+    border-width: 1px;
+    padding-top: 20px;
+    padding-bottom: 25px;
+    padding-right: 25px;
+    padding-left: 25px;
+    box-shadow: 5px 5px 5px grey;
+    border-radius: 15px;
+  }
+  
+  #chatborder {
+    border-style: solid;
+    background-color: #f6f9f6;
+    border-width: 3px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 15px;
+    padding-right: 20px;
+    padding-left: 15px;
+    border-radius: 15px;
+  }
+  
+  .chatlog {
+     font: 15px arial, sans-serif;
+  }
+  
+  #chatbox {
+    font: 17px arial, sans-serif;
+    height: 22px;
+    width: 100%;
+  }
+  
+  h1 {
+    margin: auto;
+  }
+  
+  pre {
+    background-color: #f0f0f0;
+    margin-left: 20px;
+  }</style> 
+  
+  
+  <div id='boxed'>
+    <div id='chatborder'>
+      
+      <input type="text" name="chat" id="chatbox" placeholder="Hi there! Type here to talk to me." onfocus="placeHolder()"> -->
+
+      <!DOCTYPE html>
 <html>
   <title>Business Intelligence chatbot</title>
   
@@ -106,175 +168,170 @@
           </p> 
         </div>
         <div id="userInput">
-          <input id="textInput" type="text" name="msg" placeholder="Type your query" />
+          <input id="textInput" type="text" name="msg" placeholder="Type your query" onfocus="placeHolder()" />
 
         </div> 
 
       </div>
-      <script>
-        
-         rawText = "";
-        
-       
-      function newEntry() {
-        
-         var rawText = $("#textInput").val();
-         
+    
+    <script>
+      
+     // var messages = [], //array that hold the record of each string in chat
 
-          if(rawText==1){
-          getBotResponse1();
-          }
-          else{
-            alert(rawText);
-            getBotResponse2(rawText);
-          }
-          function getBotResponse1() {
-          
-          /* var chatbox = document.getElementById("chatbox");
-            var a = document.getElementById("1");
-            var b = document.getElementById("2");
-  
-  a.onclick = function(){
-      var userHtml = '<p class="userText"><span>' I have trouble logging in "</span></p>";
-  
-            $("#chatbox").append(userHtml);
-           //  $("#textInput").val("");
-  }
-  b.onclick = function(){
-     var userHtml = '<p class="userText"><span>' I have to report another issue"</span></p>";
-  
-            $("#chatbox").append(userHtml);
-             //$("#textInput").val("");
-  } */
-            //var rawText = $("#textInput").val();
-  
-            var userHtml = '<p class="userText"><span>' + rawText + "</span></p>";
-            
-            $("#chatbox").append(userHtml);
-             $("#textInput").val("");
-  
-  
-            
-            var data1="Please follow the instructions in the given url";
-            var botHtml1 = '<p class="botText"><span>' + data1 + "</span></p>";
-            $("#chatbox").append(botHtml1);
-            document
-              .getElementById("userInput")
-              .scrollIntoView({ block: "start", behavior: "smooth" });
-            $.get("/get", { msg: rawText }).done(function(data) {
+        lastUserMessage = "", //keeps track of the most recent input string from the user
+        botMessage = "", //var keeps track of what the chatbot is going to say
+        botName = 'Annie'; //name of the chatbot
+     //   talking = true; //when false the speach function doesn't work
+      
+      function chatbotResponse() {
+       // talking = true;
+
+        botMessage = "I don't understand"; //the default message
+      
+        if (lastUserMessage === '1' || lastUserMessage =='log in') {
+        
+          botMessage = "Please follow the instructions in the given url" ;
+          var bot = '<p class="botText"><span>' + botMessage + "</span></p>";
+            $("#chatbox").append(bot);
+
+            $.get("/get", { msg: lastUserMessage }).done(function(data) {
               var botHtml = '<p class="botText"><span><a href="get">' + data + "</a></span></p>";
               $("#chatbox").append(botHtml);
-             
-  
-  
-             
-              document
-                .getElementById("userInput")
-                .scrollIntoView({ block: "start", behavior: "smooth" });
             });
-          }
+             
           
-        //}
+        }
+        if (lastUserMessage === '2' || lastUserMessage =='other') {
+        
+          var prob=" What is the problem you are facing?";
+          var bot1 = '<p class="botText"><span>' + prob + "</span></p> ";
+          $("#chatbox").append(bot1);
+
+          
+         
+
+          var bot2 = '<p class="botText"><span>' + 'a.Access issues' + "</span></p> ";
+          $("#chatbox").append(bot2);
+          var bot3 = '<p class="botText"><span>' + 'b.Report issues' + "</span></p> ";
+          $("#chatbox").append(bot3);
+          var bot4 = '<p class="botText"><span>' + 'c.Data issues' + "</span></p> ";
+          $("#chatbox").append(bot4);
+          
+        // rackf();
+      }  
+        
+         
+      if(lastUserMessage =='a' || lastUserMessage =='access' ||lastUserMessage =='Access issues' || lastUserMessage =='access issues')
+         { 
+           
+           rackf();
+           
+         }
+        
+         if(lastUserMessage =='b' || lastUserMessage =='report' ||lastUserMessage =='report issues' || lastUserMessage =='report issues')
+         { 
+           
+           report();
+           
+          
+         } 
+         if(lastUserMessage =='c' || lastUserMessage =='data' ||lastUserMessage =='data issues' || lastUserMessage =='data issues')
+         { 
+           
+           data();
+           
+          
+         } 
+        
+      
+        if (lastUserMessage === 'What is your name?') {
+          botMessage = 'My name is ' + botName;
+        }
       }
-      function getBotResponse2(rawText){
+      function rackf()
+      {
+        var rackf = '<p class="botText"><span>' + 'What is your rackf and domain ? ' + "</span></p> ";
+        $("#chatbox").append(rackf);
+        
+      }
+    function report()
+    {
+      var report = '<p class="botText"><span>' + 'What is the name of the report and please briefly explain your problem  ? ' + "</span></p> ";
+      $("#chatbox").append(report);
+    }
+
+    function data()
+    {
+      var data = '<p class="botText"><span>' + 'What is the name of the report and please explain what data issues you are facing ? ' + "</span></p> ";
+        $("#chatbox").append(data);
+    }
+     /*function domain()
+      {
+         var rawText = document.getElementById("textInput").value;
+          
+          document.getElementById("textInput").value = "";
+          
+          var userHtml1 = '<p class="userText"><span>' + rawText + "</span></p>";
+
+           
+         
+            $("#chatbox").append(userHtml1);
+        var domain = '<p class="botText"><span>' + 'What is your domain?' + "</span></p> ";
+        $("#chatbox").append(domain);
+      }
+      */
+      //this runs each time enter is pressed.
+      //It controls the overall input and output
+      function newEntry() {
        
-       alert(rawText);
-var userHtml = '<p class="userText"><span>' + rawText + "</span></p>";
-// document.write(rawText);
+        if (document.getElementById("textInput").value != "") {
+         
+          lastUserMessage = document.getElementById("textInput").value;
+          
+          document.getElementById("textInput").value = "";
+          
+          var userHtml = '<p class="userText"><span>' + lastUserMessage + "</span></p>";
 
-$("#chatbox").append(userHtml);
- $("#textInput").val("");
-
-var prob=" What is the problem you are facing?";
-var bot1 = '<p class="botText"><span>' + prob + "</span></p> ";
-$("#chatbox").append(bot1);
-
-test();
-
-
-/*   $.get("db", { msg: rawText }).done(function(data) {
-
-var botHtml = '<p class="botText"><span>' + data + "</span></p>";
-$("#chatbox").append(botHtml);
-
-
-/*var prob="1 What is the problem you are facing?";
-var bot1 = '<p class="botText"><span>' + prob + "</span><div id='problemid'> </div></p> ";
-$("#chatbox").append(bot1);
-
-
-var rawText1 = $("#textInput").val();
-var user1 = '<p class="userText"><span>' + rawText1 + "</span></p>";
-$("#textInput").val("");
-
-$("#textInput").val("");
-
-
-var rackf="2 what is your rackf?";
-var bot2 = '<p class="botText"><span>' + rackf + "</span></p>";
-$("#chatbox").append(bot2);
-var rawText2 = $("#textInput").val();
-var user2 = '<p class="userText"><span>' + rawText2 + "</span></p>";
-$("#textInput").val("");
-$("#chatbox").append(user2);
-
-
-var domain="3 what is your domain?";
-var bot3 = '<p class="botText"><span>' + domain + "</span></p>";
-$("#chatbox").append(bot3);
-var rawText3 = $("#textInput").val();
-var user3 = '<p class="userText"><span>' + rawText3 + "</span></p>";
-$("#textInput").val("");
-$("#chatbox").append(user3);
-
-var log="4 Have you logged in before?";
-var bot4 = '<p class="botText"><span>' + log + "</span></p>";
-$("#chatbox").append(bot4);
-var rawText4 = $("#textInput").val();
-var user4 = '<p class="userText"><span>' + rawText4 + "</span></p>";
-$("#textInput").val("");
-$("#chatbox").append(user4);
-
-
-document
-.getElementById("userInput")
-.scrollIntoView({ block: "start", behavior: "smooth" });
-$.get("/ai", { msg: rawText1 }).done(function(ans) {
-// var bot2 = '<p class="botText"><span>' + ans+ "</span></p>";
-//$("#chatbox").append(bot2);
-*/
-
-document
-  .getElementById("userInput")
-  .scrollIntoView({ block: "start", behavior: "smooth" }); 
-}
-
-/*else {
- var data2="Sorry I don't understand."
- var botHtml2='<p class="botText"><span>' + data2 + "</span></p>";
-  $("#chatbox").append(botHtml2);
- 
-}*/
-
-function test()
-{
-var rawText1 = $("#textInput").val();
-var user1 = '<p class="userText"><span>' + rawText1 + "</span></p>";
-$("#textInput").val("");
-$("#chatbox").append(user1);
-// $("#textInput").val("");
-
-}
-
-        $("#textInput").keypress(function(e) {
-          if (e.which == 13) {
            
-           
-           newEntry();
-          }
-        }); 
+         
+            $("#chatbox").append(userHtml);
+        }
+
+        chatbotResponse();
+
+            
+
+
+
+          
+        
+      }
+      
+      
+      
+      //runs the keypress() function when a key is pressed
+      document.onkeypress = keyPress;
+      //if the key pressed is 'enter' runs the function newEntry()
+      function keyPress(e) {
+        var x = e || window.event;
+        var key = (x.keyCode || x.which);
+        if (key == 13 || key == 3) {
+          //runs this function when enter is pressed
+          newEntry();
+          
+        }
+        if (key == 38) {
+          console.log('hi')
+            //document.getElementById("chatbox").value = lastUserMessage;
+        }
+      }
+      
+      //clears the placeholder text ion the chatbox
+      //this function is set to run when the users brings focus to the chatbox, by clicking on it
+      function placeHolder() {
+        document.getElementById("chatbox").placeholder = "";
+      }
       </script>
-    </div>
-  </body>
-</html>
-
+  
+  </div>
+</div>
